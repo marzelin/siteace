@@ -24,7 +24,9 @@
 	</nav>
 
 	<div class="container">
-		{{> website_form}}
+    {{#if isLogged}}
+  		{{> website_form}}
+    {{/if}}
 		{{> website_list}}
 	</div>
 </body>
@@ -38,7 +40,8 @@
 		<form class="js-save-website-form">
 		  <div class="form-group">
 		    <label for="url">Site address</label>
-		    <input type="text" class="form-control" id="url" placeholder="http://www.mysite.com">
+		    <input type="text" class="form-control" id="url" 
+        placeholder="http://www.mysite.com" required>
 		  </div>
 		  <div class="form-group">
 		    <label for="title">Title</label>
@@ -46,7 +49,8 @@
 		  </div>
 		    <div class="form-group">
 		    <label for="description">Description</label>
-		    <input type="text" class="form-control" id="description" placeholder="I found this site really useful for ...">
+		    <input type="text" class="form-control" id="description" 
+        placeholder="I found this site really useful for ..." required>
 		  </div>
 
 		  <button type="submit" class="btn btn-default">Submit</button>

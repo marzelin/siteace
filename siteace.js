@@ -12,6 +12,16 @@ if (Meteor.isClient) {
 			return Websites.find({});
 		}
 	});
+	
+	Template.body.helpers({
+		isLogged: function () {
+			if(Meteor.userId()) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	});
 
 
 	/////
@@ -47,13 +57,21 @@ if (Meteor.isClient) {
 		}, 
 		"submit .js-save-website-form":function(event){
 
-			// here is an example of how to get the url out of the form:
-			var url = event.target.url.value;
-			console.log("The url they entered is: "+url);
+			// form data:
+			var url = event.target.url.value,
+					title = event.target.title.value,
+					description = event.target.description.value;
 			
 			//  put your website saving code in here!	
-
-			return false;// stop the form submit from reloading the page
+			
+			Websites.insert({
+				"title": title,
+				"url": url,
+				"description": description
+			});
+			
+			// stop the form submit from reloading the page
+			return false;
 
 		}
 	});
