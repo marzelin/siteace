@@ -30,30 +30,33 @@ if (Meteor.isClient) {
 
 	Template.website_item.events({
 		"click .js-upvote":function(event){
-			// example of how you can access the id for the website in the database
-			// (this is the data context for the template)
-			var website_id = this._id;
-			var rating = this.rating;
-			// put the code in here to add a vote to a website!
-			Websites.update(
-				{"_id": website_id},
-				{$inc: {"rating": 1}}
-			);
-			// prevent the button from reloading the page
-			return false;
+			if(Meteor.userId()) {
+				// example of how you can access the id for the website in the database
+				// (this is the data context for the template)
+				var website_id = this._id;
+				var rating = this.rating;
+				// put the code in here to add a vote to a website!
+				Websites.update(
+					{"_id": website_id},
+					{$inc: {"rating": 1}}
+				);
+				// prevent the button from reloading the page
+				return false;
+			}
 		}, 
 		"click .js-downvote":function(event){
-
-			// example of how you can access the id for the website in the database
-			// (this is the data context for the template)
-			var website_id = this._id;
-			var rating = this.rating;
-			// put the code in here to remove a vote from a website!
-			Websites.update(
-				{"_id": website_id},
-				{$inc: {"rating": -1}}
-			);
-			return false;// prevent the button from reloading the page
+			if(Meteor.userId()) {
+				// example of how you can access the id for the website in the database
+				// (this is the data context for the template)
+				var website_id = this._id;
+				var rating = this.rating;
+				// put the code in here to remove a vote from a website!
+				Websites.update(
+					{"_id": website_id},
+					{$inc: {"rating": -1}}
+				);
+				return false;// prevent the button from reloading the page
+			}
 		}
 	});
 
