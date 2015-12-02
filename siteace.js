@@ -12,6 +12,16 @@ if (Meteor.isClient) {
 			return Websites.find({});
 		}
 	});
+	
+	Template.website_form.helpers({
+		isLogged: function () {
+			if(Meteor.userId()) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	});
 
 
 	/////
