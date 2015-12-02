@@ -13,7 +13,7 @@ if (Meteor.isClient) {
 		}
 	});
 	
-	Template.website_form.helpers({
+	Template.body.helpers({
 		isLogged: function () {
 			if(Meteor.userId()) {
 				return true;
