@@ -24,6 +24,11 @@ if (Meteor.isClient) {
 		}
 	});
 
+	Template.website_item.helpers({
+		date: function () {
+			return this.createdOn.toDateString();
+		}	
+	});
 
 	/////
 	// template events 
@@ -78,7 +83,8 @@ if (Meteor.isClient) {
 				"title": title,
 				"url": url,
 				"description": description,
-				"rating": 0
+				"rating": 0,
+				"createdOn": new Date()
 			});
 			
 			// stop the form submit from reloading the page
@@ -86,6 +92,10 @@ if (Meteor.isClient) {
 
 		}
 	});
+	
+	////////////////
+	/// Meteor Packages Config
+	///////////////////
 	
 	Accounts.ui.config({
 		passwordSignupFields: "USERNAME_ONLY"
