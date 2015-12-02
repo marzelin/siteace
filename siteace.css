@@ -2,3 +2,10 @@
 .hidden_div{
 	display:none;
 }
+
+a#login-name-link,
+a#login-sign-in-link {
+	text-decoration: inherit;
+	color:inherit;
+	font-size: 1.2em;
+}
