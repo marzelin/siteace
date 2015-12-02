@@ -33,20 +33,26 @@ if (Meteor.isClient) {
 			// example of how you can access the id for the website in the database
 			// (this is the data context for the template)
 			var website_id = this._id;
-			console.log("Up voting website with id "+website_id);
+			var rating = this.rating;
 			// put the code in here to add a vote to a website!
-
-			return false;// prevent the button from reloading the page
+			Websites.update(
+				{"_id": website_id},
+				{$inc: {"rating": 1}}
+			);
+			// prevent the button from reloading the page
+			return false;
 		}, 
 		"click .js-downvote":function(event){
 
 			// example of how you can access the id for the website in the database
 			// (this is the data context for the template)
 			var website_id = this._id;
-			console.log("Down voting website with id "+website_id);
-
+			var rating = this.rating;
 			// put the code in here to remove a vote from a website!
-
+			Websites.update(
+				{"_id": website_id},
+				{$inc: {"rating": -1}}
+			);
 			return false;// prevent the button from reloading the page
 		}
 	});
@@ -67,7 +73,8 @@ if (Meteor.isClient) {
 			Websites.insert({
 				"title": title,
 				"url": url,
-				"description": description
+				"description": description,
+				"rating": 0
 			});
 			
 			// stop the form submit from reloading the page
