@@ -39,7 +39,7 @@ if (Meteor.isClient) {
 
 			return false;// prevent the button from reloading the page
 		}
-	})
+	});
 
 	Template.website_form.events({
 		"click .js-toggle-website-form":function(event){
