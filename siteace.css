@@ -16,3 +16,12 @@ a#login-sign-in-link {
 	border-radius: 10px;
 	background-color: #bfb;
 }
+
+
+/*prevent the login box from being half visible when viewed on mobile */
+@media (max-width: 767px) {
+	#login-buttons.login-buttons-dropdown-align-right #login-dropdown-list {
+		left: inherit;
+		right: inherit;
+	}
+}
