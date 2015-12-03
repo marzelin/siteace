@@ -26,7 +26,7 @@ if (Meteor.isClient) {
 		}
 	});
 	
-	Template.body.helpers({
+	Template['main-page'].helpers({
 		isLogged: function () {
 			if(Meteor.userId()) {
 				return true;
