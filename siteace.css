@@ -2,6 +2,10 @@
 .hidden_div{
 	display:none;
 }
+/* give buttons some space */
+.btn.btn-default {
+		margin-bottom: 0.5em;
+}
 
 a#login-name-link,
 a#login-sign-in-link {
