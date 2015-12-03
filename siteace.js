@@ -1,6 +1,18 @@
 Websites = new Mongo.Collection("websites");
 
 if (Meteor.isClient) {
+	
+	Router.route('/', function (){
+		this.render('main-page');
+	});
+
+	Router.route('/site/:_id', function (){
+		this.render('page-details', {
+			data: function () {
+				return Websites.findOne({"_id": this.params._id});
+			}
+		});
+	});
 
 	/////
 	// template helpers 
@@ -25,6 +37,13 @@ if (Meteor.isClient) {
 	});
 
 	Template.website_item.helpers({
+		date: function () {
+			return this.createdOn.toDateString();
+		}	
+	});
+
+
+	Template['page-details'].helpers({
 		date: function () {
 			return this.createdOn.toDateString();
 		}	
