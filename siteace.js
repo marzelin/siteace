@@ -40,7 +40,6 @@ if (Meteor.isClient) {
 				// example of how you can access the id for the website in the database
 				// (this is the data context for the template)
 				var website_id = this._id;
-				var rating = this.rating;
 				// put the code in here to add a vote to a website!
 				Websites.update(
 					{"_id": website_id},
@@ -55,7 +54,6 @@ if (Meteor.isClient) {
 				// example of how you can access the id for the website in the database
 				// (this is the data context for the template)
 				var website_id = this._id;
-				var rating = this.rating;
 				// put the code in here to remove a vote from a website!
 				Websites.update(
 					{"_id": website_id},
