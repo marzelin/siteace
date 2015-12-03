@@ -38,12 +38,21 @@ if (Meteor.isClient) {
 
 	Template.website_item.helpers({
 		date: function () {
+			// check if docs are fetched from db to avoid err messages at a console
+			if(this.createdOn)
 			return this.createdOn.toDateString();
 		}	
 	});
 
 
 	Template['page-details'].helpers({
+		isLogged: function () {
+			if(Meteor.userId()) {
+				return true;
+			} else {
+				return false;
+			}
+		},
 		date: function () {
 			return this.createdOn.toDateString();
 		}	
@@ -104,9 +113,34 @@ if (Meteor.isClient) {
 				"createdOn": new Date()
 			});
 			
+			// hide the form
+			$('.js-toggle-website-form').click();
+			
 			// stop the form submit from reloading the page
 			return false;
 
+		}
+	});
+	
+	Template.comment_form.events({
+		"click .js-toggle-comment-form": function (event) {
+			$("#comment-form").toggle('slow');
+			return false;
+		},
+		"submit .js-save-comment-form": function (event) {
+			var comment = event.target.comment.value;
+			var username = Meteor.user().username;
+			var commentDoc = {"comment": comment, "username": username};
+			Websites.update({"_id": this._id}, {$push: {comments: commentDoc}});
+			
+			// hide the form after submitting
+			$('.js-toggle-comment-form').click();
+			
+			// clear the comment field
+			event.target.comment.value = '';	
+			
+			// stop the form submit from reloading the 
+			return false;
 		}
 	});
 	
