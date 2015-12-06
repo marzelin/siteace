@@ -1,4 +1,12 @@
 Websites = new Mongo.Collection("websites");
+SearchWords = new EasySearch.Index({
+	collection: Websites,
+	fields: ['title', 'description'],
+	engine: new EasySearch.Minimongo({
+		sort: function () {
+			return {rating: -1};}
+	})
+});
 
 if (Meteor.isClient) {
 
@@ -20,6 +28,7 @@ if (Meteor.isClient) {
 
 	// helper function that returns all available websites
 	Template.website_list.helpers({
+		searchWords: function () { return SearchWords;},
 		websites:function(){
 			return Websites.find({},
 													 {"sort": {"rating": -1}});

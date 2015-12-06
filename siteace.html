@@ -42,7 +42,7 @@
 		<form class="js-save-website-form">
 		  <div class="form-group">
 		    <label for="url">Site address</label>
-		    <input type="text" class="form-control" id="url" 
+		    <input type="text" class="form-control" id="url"
         placeholder="http://www.mysite.com" required>
 		  </div>
 		  <div class="form-group">
@@ -51,7 +51,7 @@
 		  </div>
 		    <div class="form-group">
 		    <label for="description">Description</label>
-		    <input type="text" class="form-control" id="description" 
+		    <input type="text" class="form-control" id="description"
         placeholder="I found this site really useful for ..." required>
 		  </div>
 
@@ -62,10 +62,11 @@
 
 <!-- template that displays several website items -->
 <template name="website_list">
+  {{> EasySearch.Input index=searchWords class="searchBox" }}
 	<ol>
-	{{#each websites}}
-	{{>website_item}}
-	{{/each}}
+  	{{#EasySearch.Each index=searchWords}}
+  	{{>website_item}}
+  	{{/EasySearch.Each}}
 	</ol>
 </template>
 
@@ -115,7 +116,7 @@
 		<form class="js-save-comment-form">
 		  <div class="form-group">
 		    <label for="url">Comment:</label>
-		    <input type="textarea" class="form-control" id="comment" 
+		    <input type="textarea" class="form-control" id="comment"
         placeholder="What do you think about this site?" required>
 		  </div>
 
@@ -129,6 +130,6 @@
   <blockquote>
     <p>{{comment}}</p>
     <footer>{{username}}</footer>
-</blockquote>  
+</blockquote>
 	{{/each}}
 </template>
