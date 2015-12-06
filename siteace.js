@@ -96,6 +96,16 @@ if (Meteor.isClient) {
 		"click .js-toggle-website-form":function(event){
 			$("#website_form").toggle('slow');
 		},
+		// autofill site information
+		"blur #url": function (event) {
+			var url = event.target.value;
+			Meteor.call('getSiteInfo', url, function (err, result) {
+				if(err) return console.log('please check if provided url is valid');
+				document.getElementById('title').value = result.title;
+				document.getElementById('description').value = result.description;
+			});
+
+		},
 		"submit .js-save-website-form":function(event){
 
 			// form data:
@@ -155,6 +165,19 @@ if (Meteor.isClient) {
 
 
 if (Meteor.isServer) {
+
+	Meteor.methods({
+		// fetch site title and description
+		getSiteInfo: function (url) {
+			this.unblock();
+			var siteContent = HTTP.call("GET", url).content;
+			var siteDOM = cheerio.load(siteContent);
+			var title = siteDOM('title').text();
+			var description = siteDOM('meta[name=description]').attr("content");
+			return {title: title, description: description};
+		}
+	});
+
 	// start up function that creates entries in the Websites databases.
   Meteor.startup(function () {
     // code to run on server at startup
