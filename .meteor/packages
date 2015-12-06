@@ -24,3 +24,4 @@ accounts-ui
 iron:router
 http
 rclai89:cheerio
+easy:search
