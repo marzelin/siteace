@@ -62,7 +62,10 @@
 
 <!-- template that displays several website items -->
 <template name="website_list">
-  {{> EasySearch.Input index=searchWords class="searchBox" }}
+  <div class="searchBox">
+    <label>Search: </label>
+    {{> EasySearch.Input index=searchWords }}
+  </div>
 	<ol>
   	{{#EasySearch.Each index=searchWords}}
   	{{>website_item}}

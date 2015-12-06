@@ -29,10 +29,6 @@ if (Meteor.isClient) {
 	// helper function that returns all available websites
 	Template.website_list.helpers({
 		searchWords: function () { return SearchWords;},
-		websites:function(){
-			return Websites.find({},
-													 {"sort": {"rating": -1}});
-		}
 	});
 
 	Template['main-page'].helpers({
@@ -196,24 +192,28 @@ if (Meteor.isServer) {
     		title:"Goldsmiths Computing Department",
     		url:"http://www.gold.ac.uk/computing/",
     		description:"This is where this course was developed.",
+				rating: 0,
     		createdOn:new Date()
     	});
     	 Websites.insert({
     		title:"University of London",
     		url:"http://www.londoninternational.ac.uk/courses/undergraduate/goldsmiths/bsc-creative-computing-bsc-diploma-work-entry-route",
     		description:"University of London International Programme.",
+				rating: 0,
     		createdOn:new Date()
     	});
     	 Websites.insert({
     		title:"Coursera",
     		url:"http://www.coursera.org",
     		description:"Universal access to the world’s best education.",
+				rating: 0,
     		createdOn:new Date()
     	});
     	Websites.insert({
     		title:"Google",
     		url:"http://www.google.com",
     		description:"Popular search engine.",
+				rating: 0,
     		createdOn:new Date()
     	});
     }
