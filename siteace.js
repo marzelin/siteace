@@ -1,7 +1,7 @@
 Websites = new Mongo.Collection("websites");
 
 if (Meteor.isClient) {
-	
+
 	Router.route('/', function (){
 		this.render('main-page');
 	});
@@ -15,7 +15,7 @@ if (Meteor.isClient) {
 	});
 
 	/////
-	// template helpers 
+	// template helpers
 	/////
 
 	// helper function that returns all available websites
@@ -25,7 +25,7 @@ if (Meteor.isClient) {
 													 {"sort": {"rating": -1}});
 		}
 	});
-	
+
 	Template['main-page'].helpers({
 		isLogged: function () {
 			if(Meteor.userId()) {
@@ -41,7 +41,7 @@ if (Meteor.isClient) {
 			// check if docs are fetched from db to avoid err messages at a console
 			if(this.createdOn)
 			return this.createdOn.toDateString();
-		}	
+		}
 	});
 
 
@@ -55,11 +55,11 @@ if (Meteor.isClient) {
 		},
 		date: function () {
 			return this.createdOn.toDateString();
-		}	
+		}
 	});
 
 	/////
-	// template events 
+	// template events
 	/////
 
 	Template.website_item.events({
@@ -76,7 +76,7 @@ if (Meteor.isClient) {
 				// prevent the button from reloading the page
 				return false;
 			}
-		}, 
+		},
 		"click .js-downvote":function(event){
 			if(Meteor.userId()) {
 				// example of how you can access the id for the website in the database
@@ -95,16 +95,26 @@ if (Meteor.isClient) {
 	Template.website_form.events({
 		"click .js-toggle-website-form":function(event){
 			$("#website_form").toggle('slow');
-		}, 
+		},
+		// autofill site information
+		"blur #url": function (event) {
+			var url = event.target.value;
+			Meteor.call('getSiteInfo', url, function (err, result) {
+				if(err) return console.log('please check if provided url is valid');
+				document.getElementById('title').value = result.title;
+				document.getElementById('description').value = result.description;
+			});
+
+		},
 		"submit .js-save-website-form":function(event){
 
 			// form data:
 			var url = event.target.url.value,
 					title = event.target.title.value,
 					description = event.target.description.value;
-			
-			//  put your website saving code in here!	
-			
+
+			//  put your website saving code in here!
+
 			Websites.insert({
 				"title": title,
 				"url": url,
@@ -112,16 +122,16 @@ if (Meteor.isClient) {
 				"rating": 0,
 				"createdOn": new Date()
 			});
-			
+
 			// hide the form
 			$('.js-toggle-website-form').click();
-			
+
 			// stop the form submit from reloading the page
 			return false;
 
 		}
 	});
-	
+
 	Template.comment_form.events({
 		"click .js-toggle-comment-form": function (event) {
 			$("#comment-form").toggle('slow');
@@ -132,22 +142,22 @@ if (Meteor.isClient) {
 			var username = Meteor.user().username;
 			var commentDoc = {"comment": comment, "username": username};
 			Websites.update({"_id": this._id}, {$push: {comments: commentDoc}});
-			
+
 			// hide the form after submitting
 			$('.js-toggle-comment-form').click();
-			
+
 			// clear the comment field
-			event.target.comment.value = '';	
-			
-			// stop the form submit from reloading the 
+			event.target.comment.value = '';
+
+			// stop the form submit from reloading the
 			return false;
 		}
 	});
-	
+
 	////////////////
 	/// Meteor Packages Config
 	///////////////////
-	
+
 	Accounts.ui.config({
 		passwordSignupFields: "USERNAME_ONLY"
 	});
@@ -155,33 +165,46 @@ if (Meteor.isClient) {
 
 
 if (Meteor.isServer) {
+
+	Meteor.methods({
+		// fetch site title and description
+		getSiteInfo: function (url) {
+			this.unblock();
+			var siteContent = HTTP.call("GET", url).content;
+			var siteDOM = cheerio.load(siteContent);
+			var title = siteDOM('title').text();
+			var description = siteDOM('meta[name=description]').attr("content");
+			return {title: title, description: description};
+		}
+	});
+
 	// start up function that creates entries in the Websites databases.
   Meteor.startup(function () {
     // code to run on server at startup
     if (!Websites.findOne()){
     	console.log("No websites yet. Creating starter data.");
     	  Websites.insert({
-    		title:"Goldsmiths Computing Department", 
-    		url:"http://www.gold.ac.uk/computing/", 
-    		description:"This is where this course was developed.", 
+    		title:"Goldsmiths Computing Department",
+    		url:"http://www.gold.ac.uk/computing/",
+    		description:"This is where this course was developed.",
     		createdOn:new Date()
     	});
     	 Websites.insert({
-    		title:"University of London", 
-    		url:"http://www.londoninternational.ac.uk/courses/undergraduate/goldsmiths/bsc-creative-computing-bsc-diploma-work-entry-route", 
-    		description:"University of London International Programme.", 
+    		title:"University of London",
+    		url:"http://www.londoninternational.ac.uk/courses/undergraduate/goldsmiths/bsc-creative-computing-bsc-diploma-work-entry-route",
+    		description:"University of London International Programme.",
     		createdOn:new Date()
     	});
     	 Websites.insert({
-    		title:"Coursera", 
-    		url:"http://www.coursera.org", 
-    		description:"Universal access to the world’s best education.", 
+    		title:"Coursera",
+    		url:"http://www.coursera.org",
+    		description:"Universal access to the world’s best education.",
     		createdOn:new Date()
     	});
     	Websites.insert({
-    		title:"Google", 
-    		url:"http://www.google.com", 
-    		description:"Popular search engine.", 
+    		title:"Google",
+    		url:"http://www.google.com",
+    		description:"Popular search engine.",
     		createdOn:new Date()
     	});
     }

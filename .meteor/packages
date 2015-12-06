@@ -22,3 +22,5 @@ twbs:bootstrap
 accounts-password
 accounts-ui
 iron:router
+http
+rclai89:cheerio
