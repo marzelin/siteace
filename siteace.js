@@ -22,6 +22,8 @@ if (Meteor.isClient) {
 		});
 	});
 
+	Meteor.subscribe('websites');
+
 	/////
 	// template helpers
 	/////
@@ -170,6 +172,18 @@ if (Meteor.isClient) {
 
 
 if (Meteor.isServer) {
+	Websites.allow({
+		insert: function (userId) {
+			return userId ? true : false;
+		},
+		update: function (userId) {
+			return userId ? true : false;
+		}
+	});
+
+	Meteor.publish('websites', function () {
+		return Websites.find();
+	});
 
 	Meteor.methods({
 		// fetch site title and description
